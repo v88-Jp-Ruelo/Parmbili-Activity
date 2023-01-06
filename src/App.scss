@@ -1,0 +1,85 @@
+@import "./assets/scss/global.scss";
+
+
+
+h1{
+    background-color: $navBarBackground;
+    color: $white;
+    font: 400 24px/24px "Public Sans";
+    height: 50px;
+    margin: 0;
+    padding: 13px 22px;
+}
+
+main{
+    background-color: $bodyBackground;
+    border-left: 22px solid $sidebarBorderColor;
+    border-right: 22px solid $sidebarBorderColor;
+    height: 100vh;
+    padding-top: 40px;
+    width: 100%;
+
+    #tile_container{
+        margin: 0 auto;
+        padding-left: 0;
+        width: 440px;
+
+        #total_earnings{
+            font: 700 20px/16px "Public Sans";
+            margin-top: 19px;
+            padding-left: 5px;
+        }
+
+        .popover-body{
+            padding: 10px;
+        }
+
+        #expand_land_button{
+            background-color: $expandButtonColor;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            height: 60px;
+            width: 210px;   
+       
+            &:disabled{
+                background-color:$expandButtonColor;
+                opacity: 70%;
+            }
+
+            span{
+                color: $white;
+                display: block;
+                font: 700 16px/18px "Inter";
+            }
+        }
+    } 
+}
+
+
+#popover-container{
+
+    button{
+        border-radius: 5px;
+        border: 0;
+        color: $white;
+        display: block;
+        font: 400 24px/24px "Public Sans";
+        height: 40px;
+        padding: 8px 17px 8px 17px;
+        width: 124px;
+        
+        &.overlay_button{
+            background-color: $primaryColor;
+
+            &.remove{
+                background-color: $removeButtonColor;
+            }
+       } 
+    }
+
+    button + button{
+        margin-top: 10px;
+    }
+}
+

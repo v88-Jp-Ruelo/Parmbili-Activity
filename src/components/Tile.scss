@@ -1,0 +1,69 @@
+@import "../assets/scss/global.scss";
+
+.tile_item{
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    height: 100px;
+    margin: 5px;
+    vertical-align: top;
+    width: 100px;
+    text-align: center;
+
+    &.null{
+        background-color: $nullBackground;
+    }
+
+    &.tilled{
+        background-color: $TilledBackground;
+    }
+
+    &.planted{
+        background-color: $plantedBackground;
+    }
+
+    &.harvest{
+        background-color: $sidebarBorderColor;
+    }
+
+    p.time_left{
+        margin-top: 5px;
+        font: 400 14px/10px "Public Sans";
+        color: $textColor;
+    }
+
+    p.reward{
+        margin-top: 5px;
+        font: 400 14px/10px "Public Sans";
+        color: $white;
+    }   
+
+    span{
+        display: block;
+        margin: 15px auto 0;
+
+        &.potato_icon{
+            width: 70px;
+            height: 60px;
+            background: url("../assets/images/plants/Potato.svg") no-repeat;
+        }
+
+        &.onion_icon{
+            width: 50px;
+            height: 55px;
+            background: url("../assets/images/plants/Onion.svg") no-repeat;
+        }
+
+        &.carrot_icon{
+            width: 23px;
+            height: 60px;
+            background: url("../assets/images/plants/Carrot.svg") no-repeat;
+        }
+
+        &.corn_icon{
+            width: 43px;
+            height: 60px;
+            background: url("../assets/images/plants/Corn.svg") no-repeat;
+        }
+    }
+}
