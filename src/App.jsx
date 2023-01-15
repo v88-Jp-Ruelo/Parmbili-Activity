@@ -1,10 +1,10 @@
 import './App.scss';
 import React from 'react';
-import Tile from './components/Tile';
+import Tile from './components/Tiles/Tile';
 import { useSelector, useDispatch } from 'react-redux';
 import { expandTiles } from "./redux/reducers/tileSlice";
 import { addUserStage } from './redux/reducers/earningSlice';
-import { EXPAND_LAND } from './config/constants';
+import { EXPAND_LAND } from './redux/config/constants';
 
 function App() {
     const dispatch = useDispatch();
