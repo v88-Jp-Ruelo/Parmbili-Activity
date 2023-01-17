@@ -2,6 +2,7 @@
 const chrome = require("selenium-webdriver/chrome");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const assert = require("assert");
+const { click } = require("@testing-library/user-event/dist/click");
 
 /* Unit test chrome options setup */
 const screen = {width: 1907, height: 1057};
@@ -34,103 +35,161 @@ describe("Parmbili Testcase", function() {
         await driver.quit();
     });
 
-    /* Red - Check overlay if present */
-    it('Should not appear the overlay button', async function() {    
-    let overlay_button = ".overlay_button";
+    /* this function is going to check every clickable element if it's working */
+    async function testElementIfWorking(assert_element){
+        await driver.wait(until.elementLocated(By.css(assert_element)), 30000);
+        {
+            const clickable_element = await driver.findElements(By.css(assert_element));
+            assert(clickable_element.length);
+        }
+        await driver.wait(until.elementIsVisible(await driver.findElement(By.css(assert_element))), 30000);
+    }
 
-    const overlay_button_elements = await driver.findElements(By.css(overlay_button))
-    assert(overlay_button_elements.length)
+    /* this function is going to assert all elements to check if it's present */
+    async function assertPresent(assert_element){
+        {
+            const element = await driver.findElements(By.css(assert_element)); 
+            assert(element.length);
+        }
+    }
+        
+
+    /**
+    * DOCU: (Parmbili Activity) 1. Check overlay if present. <br>
+    * Last updated at: January 17, 2023
+    * @author Jp
+    */
+    /* Red */
+    it('Should not appear the overlay button at the beginning of the app', async function() {    
+        await assertPresent(".overlay_button");
     });
 
-    /* Green - Check overlay if present  */
+    /* Green */
     it("Should appear the overlay button if the tile item is clicked", async function(){
         let empty_tile = ".tile_item:nth-child(16)";
-        let overlay_button = ".overlay_button";
 
-        await driver.findElement(By.css(empty_tile)).click()
-        const overlay_button_elements = await driver.findElements(By.css(overlay_button))
-        assert(overlay_button_elements.length)
+        /* Click empty tile state */
+        await driver.findElement(By.css(empty_tile)).click();
+        await testElementIfWorking(empty_tile);
+
+        /* after testing if button is working when click, let's assert the overlay_button to see if it is now visible */
+        await assertPresent(".overlay_button");
     });
 
-    /* Red - check if the modal is present */
+    /**
+    * DOCU: (Parmbili Activity) 2. Check if the modal is present. <br>
+    * Last updated at: January 17, 2023
+    * @author Jp
+    */
+    /* Red */
     it('Should not appear the modal body if plant button didnt click', async function() {
-        let modal_body = ".modal-body";
-
-        const modal_body_elements = await driver.findElements(By.css(modal_body))
-        assert(modal_body_elements.length)
+        await assertPresent(".modal-body");
     });
     
-    /* Green - check if the modal is present */
+    /* Green */
     it("Should appear the modal body if plant button is click", async function(){
         let overlay_button = ".overlay_button";
-        let tilled_mode = ".tilled";
-        let modal_body = ".modal-body";
 
-        await driver.findElement(By.css(overlay_button)).click()
-        await driver.findElement(By.css(tilled_mode)).click()
-        await driver.findElement(By.css(overlay_button)).click()
-        const modal_body_elements = await driver.findElements(By.css(modal_body))
-        assert(modal_body_elements.length)
+        /* Overlay Button for Empty State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        /* Button for Tilled State */
+        await driver.findElement(By.css(".tilled")).click();
+        await testElementIfWorking(".tilled");
+
+        /* Overlay Button for Tilled State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        /* assert the modal if it's present */
+        await assertPresent(".modal-body");
     });
 
-    /* Red - check if total earnings change */
+    /**
+    * DOCU: (Parmbili Activity) 3. Check if total earnings change whenever you buy/harvest plants. <br>
+    * Last updated at: January 17, 2023
+    * @author Jp
+    */
+
+    /* Red */
     it('Total earnings should not change the text if planted something', async function() { 
         let buy_plant_button = ".btn:nth-child(2)";
-        let plant_choice = "label:nth-child(9)";
-        let total_earnings = "total_earnings";
+        let corn_choice = "label:nth-child(9)";
 
-        await driver.findElement(By.css(plant_choice)).click() /* this button is choose what kind of plant */
-        await driver.findElement(By.css(buy_plant_button)).click()
-        {
-            const buy_plant_element = await driver.findElement(By.css(buy_plant_button))
-            await driver.actions({ bridge: true }).moveToElement(buy_plant_element).perform()
-        }
-        assert(await driver.findElement(By.id(total_earnings)).getText() == "Total Earnings: 50$")
+        /* Click corn plant in modal */
+        await driver.findElement(By.css(corn_choice)).click();
+        await testElementIfWorking(corn_choice);
+
+        /* Click the plant button to enter */
+        await driver.findElement(By.css(buy_plant_button)).click();
+        await testElementIfWorking(buy_plant_button);
+
+        assert(await driver.findElement(By.id("total_earnings")).getText() === "Total Earnings: 50$");
     });
     
-    /* Green - check if total earnings change */
+    /* Green  */
     it("Total earnings should change the text if planted something", async function(){
-        let total_earnings = "total_earnings";
-
-        assert(await driver.findElement(By.id(total_earnings)).getText() != "Total Earnings: 50$")
+        assert(await driver.findElement(By.id("total_earnings")).getText() !== "Total Earnings: 50$");
     });
 
-    /* Red - check if the remove plant modal is present */
+    /**
+    * DOCU: (Parmbili Activity) 4. Check if the remove plant modal is present <br>
+    * Last updated at: January 17, 2023
+    * @author Jp
+    */
+
+    /* Red  */
     it('Should not appear the remove modal at the beginning', async function() {
-        let modal_body = ".modal-body";
-        const modal_body_elements = await driver.findElements(By.css(modal_body))
-        assert(modal_body_elements.length)
+        /* assert the remove button if it's present */
+        await assertPresent(".remove_button");
     });
     
-    /* Green - check if the remove plant modal is present */
+    /* Green */
     it("Should appear the remove modal when planted stated tiled is click", async function(){
         let planted_mode = ".planted";
         let overlay_button = ".overlay_button";
-        let remove_button = ".remove_button";
 
-        await driver.findElement(By.css(planted_mode)).click()
-        await driver.findElement(By.css(overlay_button)).click()
-        const remove_button_elements = await driver.findElements(By.css(remove_button))
-        assert(remove_button_elements.length)
+        /* Button for Planted State */
+        await driver.findElement(By.css(planted_mode)).click();
+        await testElementIfWorking(planted_mode);
+
+        /* Overlay button for Planted State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        /* assert the remove button if it's present */
+        await assertPresent(".remove_button");
     });
 
-    /* Red - check if it will turn to empty tile after harvest was click */
+    /**
+    * DOCU: (Parmbili Activity) 5. Check if it will turn to empty tile after harvest was click <br>
+    * Last updated at: January 17, 2023
+    * @author Jp
+    */
+
+    /* Red  */
     it('Should not change to empty if the button when harvest is click', async function() {
         let harvest_mode = ".harvest";
         let harvest_button = ".overlay_button:nth-child(1)";
 
-        await driver.findElement(By.css(harvest_mode)).click()
-        await driver.findElement(By.css(harvest_button)).click()
-        const harvest_element = await driver.findElements(By.css(harvest_mode))
-        assert(harvest_element.length)
+        /* Button for Harvest State */
+        await driver.findElement(By.css(harvest_mode)).click();
+        await testElementIfWorking(harvest_mode);
+
+        /* Button to harvest the plant */
+        await driver.findElement(By.css(harvest_button)).click();
+        await testElementIfWorking(harvest_button);
+
+        await assertPresent(harvest_mode);
     });
     
-    /* Green - check if it will turn to empty tile after harvest was click */
+    /* Green */
     it("Should change to empty tile when harvest is click", async function(){
-        let harvest_mode = ".harvest";
-
-        const harvest_element = await driver.findElements(By.css(harvest_mode))
-        assert(!harvest_element.length)
+        {
+            const harvest_element = await driver.findElements(By.css(".harvest"));
+            assert(!harvest_element.length);
+        }
     });
 
 });
