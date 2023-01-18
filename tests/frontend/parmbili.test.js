@@ -10,7 +10,7 @@ const screen = {width: SCREEN_SIZE.width, height: SCREEN_SIZE.height};
 let chrome_options = new chrome.Options().windowSize(screen);
 chrome_options.addArguments("--proxy-server='direct://'");
 chrome_options.addArguments("--proxy-bypass-list=*");
-// chrome_options.addArguments("--headless");
+chrome_options.addArguments("--headless");
 chrome_options.addArguments("--disable-gpu");
 chrome_options.addArguments("--blink-settings=imagesEnabled=false"); 
 
