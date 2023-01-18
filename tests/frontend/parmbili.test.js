@@ -3,19 +3,19 @@ const chrome = require("selenium-webdriver/chrome");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const assert = require("assert");
 const { click } = require("@testing-library/user-event/dist/click");
-const {ASSERT_DURATION } = require("../../src/redux/config/test_helper");
+const {ASSERT_DURATION, TIMEOUT_SPEED, SCREEN_SIZE} = require("../../src/redux/config/test_helper");
 
 /* Unit test chrome options setup */
-const screen = {width: 1907, height: 1057};
+const screen = {width: SCREEN_SIZE.width, height: SCREEN_SIZE.height};
 let chrome_options = new chrome.Options().windowSize(screen);
 chrome_options.addArguments("--proxy-server='direct://'");
 chrome_options.addArguments("--proxy-bypass-list=*");
-chrome_options.addArguments("--headless");
+// chrome_options.addArguments("--headless");
 chrome_options.addArguments("--disable-gpu");
 chrome_options.addArguments("--blink-settings=imagesEnabled=false"); 
 
 describe("Parmbili Testcase", function() {
-    this.timeout(50000);
+    this.timeout(TIMEOUT_SPEED.normal);
     let driver;
 
     before(async function() {
@@ -29,7 +29,7 @@ describe("Parmbili Testcase", function() {
     });
 
     beforeEach(async function() {
-        await driver.sleep(1000);
+        await driver.sleep(TIMEOUT_SPEED.fastest);
     });
     
     after(async function() {
