@@ -250,7 +250,7 @@ describe("Parmbili Testcase", function() {
         await driver.findElement(By.css(remove_button)).click();
         await testElementIfWorking(remove_button);
 
-        /* assert the remove button if it's present */
+        /* assert the empty tile after remove plant button is click */
         await assertPresent(empty_tile);
     });
 
