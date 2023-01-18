@@ -3,7 +3,11 @@ const chrome = require("selenium-webdriver/chrome");
 const { Builder, By, Key, until } = require("selenium-webdriver");
 const assert = require("assert");
 const { click } = require("@testing-library/user-event/dist/click");
-
+const ASSERT_DURATION = {
+    fast: 3000,
+    faster: 2000,
+    fastest: 1000
+}
 /* Unit test chrome options setup */
 const screen = {width: 1907, height: 1057};
 let chrome_options = new chrome.Options().windowSize(screen);
@@ -35,17 +39,25 @@ describe("Parmbili Testcase", function() {
         await driver.quit();
     });
 
-    /* this function is going to check every clickable element if it's working */
+    /**
+    * DOCU: This function is going to check every clickable element if it's working <br>
+    * Last updated at: January 18, 2023
+    * @author Jp
+    */
     async function testElementIfWorking(assert_element){
-        await driver.wait(until.elementLocated(By.css(assert_element)), 30000);
+        await driver.wait(until.elementLocated(By.css(assert_element)), ASSERT_DURATION.fast);
         {
             const clickable_element = await driver.findElements(By.css(assert_element));
             assert(clickable_element.length);
         }
-        await driver.wait(until.elementIsVisible(await driver.findElement(By.css(assert_element))), 30000);
+        await driver.wait(until.elementIsVisible(await driver.findElement(By.css(assert_element))), ASSERT_DURATION.fast);
     }
 
-    /* this function is going to assert all elements to check if it's present */
+    /**
+    * DOCU: This function is going to assert all elements to check if it's present <br>
+    * Last updated at: January 18, 2023
+    * @author Jp
+    */
     async function assertPresent(assert_element){
         {
             const element = await driver.findElements(By.css(assert_element)); 
