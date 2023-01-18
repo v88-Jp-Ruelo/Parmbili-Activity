@@ -13,7 +13,7 @@ const screen = {width: 1907, height: 1057};
 let chrome_options = new chrome.Options().windowSize(screen);
 chrome_options.addArguments("--proxy-server='direct://'");
 chrome_options.addArguments("--proxy-bypass-list=*");
-chrome_options.addArguments("--headless");
+// chrome_options.addArguments("--headless");
 chrome_options.addArguments("--disable-gpu");
 chrome_options.addArguments("--blink-settings=imagesEnabled=false"); 
 
@@ -127,11 +127,11 @@ describe("Parmbili Testcase", function() {
     /* Red */
     it('Total earnings should not change the text if planted something', async function() { 
         let buy_plant_button = ".btn:nth-child(2)";
-        let corn_choice = "label:nth-child(9)";
+        let potato_choice = "label:nth-child(3)";
 
-        /* Click corn plant in modal */
-        await driver.findElement(By.css(corn_choice)).click();
-        await testElementIfWorking(corn_choice);
+        /* Click potato plant in modal */
+        await driver.findElement(By.css(potato_choice)).click();
+        await testElementIfWorking(potato_choice);
 
         /* Click the plant button to enter */
         await driver.findElement(By.css(buy_plant_button)).click();
@@ -158,7 +158,7 @@ describe("Parmbili Testcase", function() {
     });
     
     /* Green */
-    it("Should appear the remove modal when planted stated tiled is click", async function(){
+    it("Should appear the remove modal when planted stated tilled is click", async function(){
         let planted_mode = ".planted";
         let overlay_button = ".overlay_button";
 
@@ -182,8 +182,13 @@ describe("Parmbili Testcase", function() {
 
     /* Red  */
     it('Should not change to empty if the button when harvest is click', async function() {
+        let cancel_button = ".cancel_button";
         let harvest_mode = ".harvest";
         let harvest_button = ".overlay_button:nth-child(1)";
+
+        /* Button for Harvest State */
+        await driver.findElement(By.css(cancel_button)).click();
+        await testElementIfWorking(cancel_button);
 
         /* Button for Harvest State */
         await driver.findElement(By.css(harvest_mode)).click();
@@ -202,6 +207,51 @@ describe("Parmbili Testcase", function() {
             const harvest_element = await driver.findElements(By.css(".harvest"));
             assert(!harvest_element.length);
         }
+    });
+
+    /**
+    * DOCU: (Parmbili Activity) 6. Check if the remove plant is working <br>
+    * Last updated at: January 18, 2023
+    * @author Jp
+    */
+
+    /* Green */
+    it("Should allow user to remove plant", async function(){
+        let empty_tile = ".tile_item:nth-child(15)";
+        let tilled_mode = ".tilled";
+        let planted_mode = ".planted";
+        let overlay_button = ".overlay_button";
+        let remove_button = ".remove_button";
+
+        /* Click empty tile state */
+        await driver.findElement(By.css(empty_tile)).click();
+        await testElementIfWorking(empty_tile);
+
+        /* Overlay Button for Empty State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        /* Button for Tilled State */
+        await driver.findElement(By.css(tilled_mode)).click();
+        await testElementIfWorking(tilled_mode);
+
+        /* Overlay Button for Tilled State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        /* Button for Planted State */
+        await driver.findElement(By.css(planted_mode)).click();
+        await testElementIfWorking(planted_mode);
+
+        /* Overlay button for Planted State */
+        await driver.findElement(By.css(overlay_button)).click();
+        await testElementIfWorking(overlay_button);
+
+        await driver.findElement(By.css(remove_button)).click();
+        await testElementIfWorking(remove_button);
+
+        /* assert the remove button if it's present */
+        await assertPresent(empty_tile);
     });
 
 });
